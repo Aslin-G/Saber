@@ -113,12 +113,13 @@ window.W = window.W || {};
         const lvId = B.opts.levelId;
         const t = B.opts.type;
         const xp = t === 'boss' ? 160 + lvId * 20 : t === 'mini' ? 70 + lvId * 8 : 16 + lvId * 4;
-        const d = t === 'boss' ? 260 : t === 'mini' ? 140 : 26 + Math.round(Math.random() * 18);
-        S.addMoney(Math.round(d * S.comboMul()), 0);
+        const d = t === 'boss' ? 120 : t === 'mini' ? 90 : 14 + Math.round(Math.random() * 10);
+        const money = Math.round(d * (1 + Math.min(S.data.combo, 5) * 0.1));
+        S.addMoney(money, 0);
         const ups = S.gainXp(xp);
         S.data.stats.battles++;
         W.A.sfxPlay('victory');
-        UI.banner('¡Victoria!', '+' + xp + ' XP · +' + Math.round(d * S.comboMul()) + ' Dracmas de Sal', '#46c37b');
+        UI.banner('¡Victoria!', '+' + xp + ' XP · +' + money + ' Dracmas de Sal', '#46c37b');
         if (ups) setTimeout(() => { W.A.sfxPlay('levelup'); UI.toast('¡Subida de nivel! El grupo alcanza el nivel ' + S.data.lvl + ' (PV restaurados)', { gold: true, dur: 3.5 }); }, 700);
         await wait(1.3);
       }
@@ -179,9 +180,13 @@ window.W = window.W || {};
         if (['Space', 'Enter', 'KeyE', 'NumpadEnter'].includes(code) && pressedAt == null) pressedAt = ring.t;
         return true;
       });
+      // En pantallas táctiles basta con tocar en cualquier parte.
+      const tap = e => { if (pressedAt == null && !(e.target.closest && e.target.closest('#touch'))) pressedAt = ring.t; };
+      window.addEventListener('pointerdown', tap);
       const check = () => {
         if (ring.t >= dur + 0.12 || pressedAt != null) {
           I.pop(h);
+          window.removeEventListener('pointerdown', tap);
           ring.done = true;
           if (pressedAt == null) return res('miss');
           const d = Math.abs(pressedAt - dur);
@@ -273,12 +278,12 @@ window.W = window.W || {};
       levelId: lvId, mode: 'once', descarte: B.descarte, onDescarte: () => { B.descarte = false; },
       title: f.final ? 'Juicio de Saberes · ¡Ruptura!' : 'Juicio de Saberes · Sellos del mini-jefe',
       role: f.final ? 'Golpe de Ruptura (Break)' : 'Duelo del mini-jefe',
-      reward: (ok, first, th) => ok ? (f.final ? 'Recompensa: +400 XP · +' + (first ? 2 : 1) + ' Tumas de Coral' : 'Recompensa: +200 XP · +' + (first ? 300 : 150) + ' Dracmas') + (th > 0.5 && first ? ' · Bono térmico +50 Dracmas' : '') : 'La cera contraataca. Analiza la pista y vuelve a intentarlo en tu próximo turno.'
+      reward: (ok, first, th) => ok ? (f.final ? 'Recompensa: +400 XP · +' + (first ? 2 : 1) + ' Tumas de Coral' : 'Recompensa: +200 XP · +' + (first ? 120 : 60) + ' Dracmas') + (th > 0.5 && first ? ' · Bono térmico +25 Dracmas' : '') : 'La cera contraataca. Analiza la pista y vuelve a intentarlo en tu próximo turno.'
     });
     W.A.play('boss');
     if (res.correct) {
       const first = res.first;
-      if (res.thermal > 0.5 && first) S.addMoney(50, 0);
+      if (res.thermal > 0.5 && first) S.addMoney(25, 0);
       if (f.final) {
         f.locks[3] = true; f.shield = false; f.stun = 2; st.bossBreak = true;
         S.gainXp(400); S.addMoney(0, first ? 2 : 1);
@@ -291,7 +296,7 @@ window.W = window.W || {};
         UI.toast('¡El Ataque Definitivo está listo! Úsalo para purificar al jefe.', { gold: true, dur: 3.2 });
       } else {
         f.locks[2] = true; f.shield = false; f.stun = 1; st.miniBreak = true;
-        S.gainXp(200); S.addMoney(first ? 300 : 150, 0);
+        S.gainXp(200); S.addMoney(first ? 120 : 60, 0);
         R.doFlash('#ffffff', 0.7); R.shake(8); W.A.sfxPlay('break');
         UI.banner('¡Sellos rotos!', 'El mini-jefe pierde su escudo de cera', '#ffd25a');
         shatter(f);
@@ -327,7 +332,7 @@ window.W = window.W || {};
       await foeAttack(f, true);
       return 'ok';
     }
-    S.gainXp(800); S.addMoney(300, res.first ? 5 : 2);
+    S.gainXp(800); S.addMoney(120, res.first ? 5 : 2);
     S.level(lvId).ultimate = true;
     await cinematic(ULT[lvId - 1]);
     f.purified = true; f.hp = 0;

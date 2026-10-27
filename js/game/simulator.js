@@ -124,8 +124,8 @@ window.W = window.W || {};
       let m;
       function finish() {
         heat.stop();
-        msg.innerHTML = '<strong>¡Telar completo!</strong> ' + (errors === 0 ? 'Sin errores: bono de +80 Dracmas.' : errors + ' tropiezos en el camino; así se aprende.');
-        if (errors === 0) W.S.addMoney(80, 0);
+        msg.innerHTML = '<strong>¡Telar completo!</strong> ' + (errors === 0 ? 'Sin errores: bono de +40 Dracmas.' : errors + ' tropiezos en el camino; así se aprende.');
+        if (errors === 0) W.S.addMoney(40, 0);
         W.A.sfxPlay('chest');
         const b = UI.el('<button class="btn gold" data-nav>Abrir las compuertas</button>');
         b.addEventListener('click', () => { m.close(); resolve({ errors }); });
@@ -198,8 +198,8 @@ window.W = window.W || {};
         if (res.ok) {
           solved = true;
           heat.stop();
-          msg.innerHTML = '<strong>¡Calibración perfecta!</strong> ' + (tries === 1 ? 'Al primer intento: +80 Dracmas.' : 'Las compuertas se abren.');
-          if (tries === 1) W.S.addMoney(80, 0);
+          msg.innerHTML = '<strong>¡Calibración perfecta!</strong> ' + (tries === 1 ? 'Al primer intento: +40 Dracmas.' : 'Las compuertas se abren.');
+          if (tries === 1) W.S.addMoney(40, 0);
           W.A.sfxPlay('chest');
           go.textContent = 'Abrir las compuertas';
           sl.querySelectorAll('input,button').forEach(x => { x.disabled = true; });
@@ -230,7 +230,7 @@ window.W = window.W || {};
   // ── Observatorio de cinco anillos ──
   function rings(cfg, levelId) {
     return new Promise(resolve => {
-      const body = UI.el('<div style="display:grid;grid-template-columns:minmax(0,40%) 1fr;gap:1em;align-items:start"><canvas width="120" height="120" style="width:100%;image-rendering:pixelated;background:#0b1430;border-radius:50%"></canvas><div class="rq"></div></div>');
+      const body = UI.el('<div style="display:grid;grid-template-columns:minmax(0,32%) 1fr;gap:1.2em;align-items:center"><canvas width="120" height="120" style="width:100%;max-width:calc(var(--u) * 150);justify-self:center;image-rendering:pixelated;background:radial-gradient(#1a2450,#0b1430);border-radius:50%;box-shadow:0 0 calc(var(--u) * 10) rgba(255,224,102,.15)"></canvas><div class="rq"></div></div>');
       const box = shell(cfg, body);
       const cv = body.querySelector('canvas'), cx = cv.getContext('2d'), rq = body.querySelector('.rq');
       const msg = box.querySelector('.simMsg');
@@ -282,7 +282,7 @@ window.W = window.W || {};
         heat.stop();
         rq.innerHTML = '<p class="qstem"><strong>¡Los cinco anillos están encendidos!</strong> El Faro del Norte ilumina la ciudadela.</p>';
         W.A.sfxPlay('chest');
-        if (!errors) W.S.addMoney(100, 0);
+        if (!errors) W.S.addMoney(60, 0);
         const b = UI.el('<button class="btn gold" data-nav>Encender el faro</button>');
         b.addEventListener('click', () => { cancelAnimationFrame(raf); m.close(); resolve({ errors }); });
         box.querySelector('.qfoot').appendChild(b);

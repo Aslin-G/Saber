@@ -453,20 +453,30 @@ window.W = window.W || {};
   };
 
   PR.waxgate = function (melt) {
-    const c = cv(48, 44), g = c.g;
+    const c = cv(44, 50), g = c.g;
     const m = melt || 0;
-    const H = Math.round(42 * (1 - m));
-    const top = 43 - H;
-    g.r(2, top, 44, H, '#efe5cf');
-    for (let x = 2; x < 46; x += 4) { const L = 3 + ((x * 7) % 9); g.r(x, top + H - 1, 3, Math.min(L, 2 + m * 10), '#efe5cf'); }
-    g.r(2, top, 44, 2, '#fffaf0'); g.r(2, top, 3, H, '#fffaf0'); g.r(43, top, 3, H, '#d9ccb4');
-    for (let i = 0; i < 12; i++) g.p(4 + ((i * 37) % 40), top + 4 + ((i * 13) % Math.max(1, H - 6)), '#d9ccb4');
-    if (H > 20) {
-      const cy = top + H / 2;
-      g.circle(24, cy, 8, '#d9ccb4'); g.circle(24, cy, 7, '#f7f1e3'); g.circle(24, cy, 4, '#c9b89a');
-      g.r(23, cy - 6, 2, 12, '#b8a684'); g.r(18, cy - 1, 12, 2, '#b8a684');
+    const H = Math.round(44 * (1 - m));
+    const top = 49 - H;
+    if (H > 2) {
+      for (let y = 0; y < H; y++) {
+        const yy = top + y;
+        const arch = y < 12 ? Math.round(Math.sqrt(Math.max(0, 144 - (12 - y) * (12 - y))) * 1.6) : 20;
+        g.r(22 - arch, yy, arch * 2, 1, '#efe5cf');
+        g.r(22 - arch, yy, Math.max(1, arch * 0.35), 1, '#fffaf0');
+        g.r(22 + arch - 3, yy, 3, 1, '#d9ccb4');
+      }
+      for (let x = 3; x < 41; x += 4) { const L = 3 + ((x * 7) % 7); g.r(x, top + H - 1, 3, Math.min(L, 2 + Math.round(m * 12)), '#efe5cf'); g.p(x + 1, top + H - 1 + Math.min(L, 2 + Math.round(m * 12)), '#d9ccb4'); }
+      if (H > 26) {
+        const cy = top + 22;
+        g.circle(22, cy, 9, '#c9a27a'); g.circle(22, cy, 8, '#e9c99a'); g.circle(21, cy - 1, 6, '#f6e2bf');
+        g.r(18, cy - 4, 2, 8, '#a8784c'); g.r(18, cy - 4, 6, 2, '#a8784c'); g.r(22, cy - 3, 2, 3, '#a8784c'); g.r(18, cy - 1, 6, 2, '#a8784c');
+        for (let i = 0; i < 8; i++) { const a = i * Math.PI / 4; g.p(22 + Math.cos(a) * 10, cy + Math.sin(a) * 10, '#c9a27a'); }
+        g.r(6, top + 10, 2, 7, '#f7f1e3'); g.p(6, top + 9, '#ffb54a'); g.p(7, top + 8, '#ffe066');
+        g.r(36, top + 12, 2, 6, '#f7f1e3'); g.p(36, top + 11, '#ffb54a'); g.p(37, top + 10, '#ffe066');
+        for (let i = 0; i < 10; i++) g.p(5 + ((i * 37) % 34), top + 16 + ((i * 13) % Math.max(1, H - 20)), '#d9ccb4');
+      }
     }
-    return fin(c, 24, 43, {});
+    return fin(c, 22, 49, {});
   };
 
   PR.waxwall = function (seed) {

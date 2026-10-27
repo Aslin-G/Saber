@@ -295,7 +295,7 @@ window.W = window.W || {};
     });
   }
   function addEnemy(x, y, k) {
-    if (WD.st.enemies.includes(k)) return;
+    if (WD.st.enemies.includes(k) || WD.st.boss) return;
     const kinds = WD.lv.enemies || ['pregonero'];
     const kind = kinds[k % kinds.length];
     ent({
@@ -494,7 +494,7 @@ window.W = window.W || {};
       if (best && I.pressed.confirm) { pa.path = null; WD.interact(best); }
       // Encuentro automático con el jefe al acercarse
       for (const e of WD.ents) {
-        if (e.kind === 'boss' && !WD.st.boss && WD.st.mini && e.alive && Math.hypot(e.x - pa.x, e.y - pa.y) < 44 && !e.prompted) { e.prompted = true; WD.interact(e); }
+        if (e.kind === 'boss' && !WD.st.boss && WD.st.mini && e.alive && Math.hypot(e.x - pa.x, e.y - pa.y) < 44 && WD.t > (e.prompted || 0)) { e.prompted = WD.t + 1e9; WD.interact(e); }
       }
     }
     W.UI.hud.prompt(WD.focus && free ? WD.focus.label : null);

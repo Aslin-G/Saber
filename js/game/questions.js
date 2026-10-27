@@ -203,10 +203,10 @@ window.W = window.W || {};
       Q.currentQuick = { q, order };
       let sel = -1, answered = false;
       const box = UI.el(`<div class="pnl qpanel" style="height:auto;max-height:94vh;width:min(96vw,calc(var(--u)*420))">
-        <div class="qhead"><h2>Golpe Sabio</h2><span class="chip" style="border-color:${mod.color}"><img class="ico" data-icon="${W.ICON.mod[q.m]}" alt=""> ${U.esc(mod.name)}</span><span class="chip">Pregunta relámpago</span></div>
+        <div class="qhead"><h2>${ctx.training ? 'Entrenamiento · ' + ctx.n + ' de ' + ctx.of : 'Golpe Sabio'}</h2><span class="chip" style="border-color:${mod.color}"><img class="ico" data-icon="${W.ICON.mod[q.m]}" alt=""> ${U.esc(mod.name)}</span><span class="chip">Pregunta relámpago</span></div>
         <div class="qbody full"><div class="qmain">
           <div class="qstem"><p>${U.esc(q.q)}</p></div><div class="opts"></div><div class="fbw"></div>
-          <div class="qfoot"><span class="hint">Acierta para asestar un golpe crítico</span></div>
+          <div class="qfoot"><span class="hint">${ctx.training ? 'Elige con A–C o 1–3' : 'Acierta para asestar un golpe crítico'}</span></div>
         </div></div></div>`);
       const optsEl = box.querySelector('.opts'), fbw = box.querySelector('.fbw'), foot = box.querySelector('.qfoot');
       order.forEach((orig, i) => {
@@ -223,7 +223,7 @@ window.W = window.W || {};
         [...optsEl.children].forEach(b => { b.disabled = true; });
         optsEl.children[sel].classList.add(correct ? 'right' : 'wrong');
         optsEl.children[order.indexOf(0)].classList.add('right');
-        fbw.innerHTML = '<div class="fb ' + (correct ? 'ok' : 'no') + '"><h4>' + (correct ? '¡Golpe Sabio!' : 'La cera esquivó tu golpe') + '</h4><p>' + U.esc(q.e) + '</p></div>';
+        fbw.innerHTML = '<div class="fb ' + (correct ? 'ok' : 'no') + '"><h4>' + (ctx.training ? (correct ? '¡Correcto!' : 'Revisa la explicación') : correct ? '¡Golpe Sabio!' : 'La cera esquivó tu golpe') + '</h4><p>' + U.esc(q.e) + '</p></div>';
         W.A.sfxPlay(correct ? 'correct' : 'wrong');
         const next = UI.el('<button class="btn gold" data-nav>Continuar</button>');
         next.addEventListener('click', () => { m.close(); resolve({ correct }); });

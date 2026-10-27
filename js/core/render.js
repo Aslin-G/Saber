@@ -175,7 +175,7 @@ window.W = window.W || {};
     for (const L of R.lights) {
       if (L.bloom <= 0) continue;
       const r = L.r * 0.55;
-      f.globalAlpha = U.clamp(L.a * L.bloom * 0.55, 0, 1);
+      f.globalAlpha = U.clamp(L.a * L.bloom * 0.38, 0, 1);
       f.drawImage(R.glow(L.color, true), L.x - r, L.y - r, r * 2, r * 2);
     }
     f.restore();

@@ -269,8 +269,9 @@ def level3():  # San Juan del Cesar y Fonseca: valle verde, cañahuates, tarima 
     # río Cesar como frontera A|B
     m.path([(20, 4), (21, 12), (20, 20), (21, 31)], '~', width=3)
     m.rect(19, 16, 24, 17, '=')
-    m.vline(24, 15, 18, 'G'); m.set(24, 15, '#'); m.set(24, 18, '#')
-    m.rect(24, 13, 24, 14, '#'); m.rect(24, 19, 24, 20, '#')
+    m.vline(24, 16, 17, 'G')
+    # remanso a ambos lados del sello: el río se ensancha y solo el puente cruza
+    m.rect(22, 12, 24, 15, '~'); m.rect(22, 18, 24, 21, '~')
     # plaza del festival (zona B) y tarima
     m.rect(27, 8, 40, 22, ':')
     m.set(33, 9, 'A')

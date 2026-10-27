@@ -12,10 +12,10 @@ window.W = window.W || {};
     iguaraya: { name: 'Dulce de Iguaraya', desc: 'Restaura 40 de Energía de Kanas.', price: 120, cur: 'd', use: 'battle', icon: '🍬' },
     cafe: { name: 'Café del Cerro Pintao', desc: '+30 % de daño del grupo durante 3 turnos.', price: 150, cur: 'd', use: 'battle', icon: '☕' },
     agua: { name: 'Agua Fresca del Ranchería', desc: 'Reanima a un héroe caído con la mitad de sus PV.', price: 140, cur: 'd', use: 'battle', icon: '💧' },
-    manta: { name: 'Manta de Kanas Refractaria', desc: 'Equipo: +25 % de defensa para todo el grupo.', price: 4, cur: 't', equip: true, icon: '🧣' },
-    acordeon: { name: 'Acordeón Corona de Villanueva', desc: 'Equipo: +25 % de ataque y ventana de reflejo más amplia.', price: 6, cur: 't', equip: true, icon: '🪗' },
-    gafas: { name: 'Gafas de Cuarzo de Macuira', desc: 'Ojo de Evidencia: resalta en dorado las restricciones clave de cada enunciado.', price: 5, cur: 't', equip: true, icon: '👓' },
-    descarte: { name: 'Lente de Descarte de Cera', desc: 'Una vez por combate tacha un distractor (queda registrado como ayuda).', price: 3, cur: 't', equip: true, icon: '🔍' }
+    manta: { name: 'Manta de Kanas Refractaria', desc: 'Equipo: +25 % de defensa para todo el grupo.', price: 6, cur: 't', equip: true, icon: '🧣' },
+    acordeon: { name: 'Acordeón Corona de Villanueva', desc: 'Equipo: +25 % de ataque y ventana de reflejo más amplia.', price: 9, cur: 't', equip: true, icon: '🪗' },
+    gafas: { name: 'Gafas de Cuarzo de Macuira', desc: 'Ojo de Evidencia: resalta en dorado las restricciones clave de cada enunciado.', price: 7, cur: 't', equip: true, icon: '👓' },
+    descarte: { name: 'Lente de Descarte de Cera', desc: 'Una vez por combate tacha un distractor (queda registrado como ayuda).', price: 4, cur: 't', equip: true, icon: '🔍' }
   };
 
   const HERO_BASE = {

@@ -13,6 +13,7 @@ window.W = window.W || {};
     if (SC.cur && SC.cur.exit) SC.cur.exit();
     SC.cur = SC[name];
     SC.name = name;
+    document.body.dataset.scene = name;
     if (SC.cur.enter) SC.cur.enter();
   };
   SC.update = function (dt) { if (SC.cur && SC.cur.update) SC.cur.update(dt); };
@@ -94,8 +95,8 @@ window.W = window.W || {};
       R.light(470 - lt.ax + lt.lamp.x, 196 - lt.ay + lt.lamp.y, 60, '#fff2a8', 1, 1);
       // Héroes en el muelle
       const ch = ['wayra', 'lucho', 'keyla'];
-      ch.forEach((id, i) => W.CH.draw(ctx, W.CH.hero(id), 300 + i * 26, 268 + (i === 1 ? 6 : 0), 'up', 0));
-      R.waxHole(326, 250, 70 + Math.sin(t * 2) * 6);
+      ch.forEach((id, i) => W.CH.draw(ctx, W.CH.hero(id), 296 + i * 26, 222 + (i === 1 ? 5 : 0), 'up', 0));
+      R.waxHole(322, 206, 74 + Math.sin(t * 2) * 6);
       R.wax.amount = 0.6;
       R.ambient = '#f6e8f0';
       R.light(520, 92, 160, '#ffb36b', 0.6, 1);
@@ -185,10 +186,10 @@ window.W = window.W || {};
     const res = await W.Q.ask(item, {
       levelId: lv.id, mode: 'loop', title: 'Sello de Cera · Pregunta 1', role: 'Desactivación de trampa',
       onWrong: () => F.hurtParty(0.06),
-      reward: (ok, first, th) => ok ? 'Recompensa: +100 XP · +' + (first ? 120 : 50) + ' Dracmas de Sal' + (first && th > 0.5 ? ' · Bono térmico +30' : '') : 'La cera te quema un poco (−6 % PV). Vuelve a intentarlo.'
+      reward: (ok, first, th) => ok ? 'Recompensa: +100 XP · +' + (first ? 60 : 25) + ' Dracmas de Sal' + (first && th > 0.5 ? ' · Bono térmico +15' : '') : 'La cera te quema un poco (−6 % PV). Vuelve a intentarlo.'
     });
-    S.gainXp(100); S.addMoney(res.first ? 120 : 50, 0);
-    if (res.first && res.thermal > 0.5) S.addMoney(30, 0);
+    S.gainXp(100); S.addMoney(res.first ? 60 : 25, 0);
+    if (res.first && res.thermal > 0.5) S.addMoney(15, 0);
     W.A.play('explore', { transpose: W.BIOMES[lv.biome].transpose || 0 });
     st.gate = true;
     ent.open();
@@ -211,9 +212,9 @@ window.W = window.W || {};
       const res = await W.Q.ask(item, {
         levelId: lv.id, mode: 'loop', title: 'Activación del simulador · Pregunta 2', role: 'Activación del simulador',
         onWrong: () => F.hurtParty(0.05),
-        reward: (ok, first) => ok ? 'Recompensa: +150 XP · +' + (first ? 150 : 60) + ' Dracmas · el simulador se enciende' : 'El simulador chisporrotea. Revisa el dato exacto en el Códice.'
+        reward: (ok, first) => ok ? 'Recompensa: +150 XP · +' + (first ? 70 : 30) + ' Dracmas · el simulador se enciende' : 'El simulador chisporrotea. Revisa el dato exacto en el Códice.'
       });
-      S.gainXp(150); S.addMoney(res.first ? 150 : 60, 0);
+      S.gainXp(150); S.addMoney(res.first ? 70 : 30, 0);
       st.simQ = true;
       S.save();
     }
@@ -250,10 +251,11 @@ window.W = window.W || {};
     const WD = W.World, st = WD.st, lv = WD.lv;
     if (st.boss || !st.mini) return;
     const ch = await UI.dialog(lv.bossIntro.concat([{ who: 'narrator', text: '¿Enfrentar ahora al Jefe Final de Cera? (Puedes volver al chinchorro o a la tienda antes)', choices: ['¡Al combate!', 'Prepararme primero'] }]));
-    if (ch === 1) { ent.prompted = false; const pa = WD.party; pa.y += 18; return; }
+    if (ch === 1) { ent.prompted = WD.t + 6; UI.toast('Cuando estés listo, acércate de nuevo al jefe.'); return; }
     const r = await W.Battle.start({ type: 'boss', kind: lv.boss.kind, levelId: lv.id });
-    if (r !== 'win') { W.A.play('explore', { transpose: W.BIOMES[lv.biome].transpose || 0 }); ent.prompted = false; return; }
+    if (r !== 'win') { W.A.play('explore', { transpose: W.BIOMES[lv.biome].transpose || 0 }); ent.prompted = WD.t + 6; return; }
     st.boss = true;
+    WD.ents.forEach(e => { if (e.kind === 'enemy' && e.alive) { e.alive = false; WD.sparkle(e.x, e.y - 10, '#fffaf0', 14, true); } });
     WD.burst = { x: ent.x, y: ent.y - 30, r: 0 };
     WD.waxTarget = 0; WD.wax = Math.min(WD.wax, 0.9);
     W.A.sfxPlay('ultimate');
@@ -368,7 +370,7 @@ window.W = window.W || {};
     const cons = Object.keys(it).filter(k => !it[k].equip).map(k => '<div class="shopItem"><span class="em">' + it[k].icon + '</span><div><b>' + U.esc(it[k].name) + '</b><p>' + U.esc(it[k].desc) + '</p></div><span class="price">×' + (S.data.inv[k] || 0) + '</span></div>').join('');
     const eq = Object.keys(it).filter(k => it[k].equip).map(k => '<div class="shopItem"><span class="em">' + it[k].icon + '</span><div><b>' + U.esc(it[k].name) + '</b><p>' + U.esc(it[k].desc) + '</p></div><span class="price">' + (S.data.equip[k] ? '✔ Equipado' : '—') + '</span></div>').join('');
     const heroes = ['wayra', 'lucho', 'keyla'].map(id => '<div class="ro"><small>' + UI.SPEAKERS[id].name + '</small><b>' + S.hp(id) + '/' + S.maxHp(id) + ' PV</b><small>ATQ ' + S.atk(id) + ' · DEF ' + S.def(id) + '</small></div>').join('');
-    panel('<button class="closeX" data-nav data-close>×</button><h2>Equipo del grupo · Nivel ' + S.data.lvl + '</h2><p class="note">Experiencia: ' + S.data.xp + ' / ' + S.xpNeed(S.data.lvl) + ' · Energía de Kanas ' + S.data.mp + '/100 · <img class="ico" data-icon="dracma" alt=""> ' + U.num(S.data.dracmas) + ' · <img class="ico" data-icon="tuma" alt=""> ' + S.data.tumas + '</p><div class="readouts">' + heroes + '</div><h3>Consumibles</h3><div class="menuList">' + cons + '</div><h3>Equipamiento épico</h3><div class="menuList">' + eq + '</div><div class="qfoot"><button class="btn gold" data-nav data-close>Cerrar</button></div>');
+    panel('<button class="closeX" data-nav data-close>×</button><h2>Equipo del grupo · Nivel ' + S.data.lvl + '</h2><p class="note">Experiencia: ' + S.data.xp + ' / ' + S.xpNeed(S.data.lvl) + ' · Energía de Kanas ' + S.data.mp + '/100 · <img class="ico" data-icon="dracma" alt=""> ' + U.num(S.data.dracmas) + ' · <img class="ico" data-icon="tuma" alt=""> ' + S.data.tumas + '</p><div class="readouts">' + heroes + '</div><h3>Consumibles</h3><div class="menuList cols2">' + cons + '</div><h3>Equipamiento épico</h3><div class="menuList cols2">' + eq + '</div><div class="qfoot"><button class="btn gold" data-nav data-close>Cerrar</button></div>');
   };
 
   M.shop = function () {
@@ -466,12 +468,14 @@ window.W = window.W || {};
     p.box.querySelectorAll('[data-l]').forEach(b => b.addEventListener('click', async () => { p.close(); await M.review(parseInt(b.dataset.l, 10)); }));
     p.box.querySelectorAll('[data-m]').forEach(b => b.addEventListener('click', async () => {
       p.close();
+      let ok = 0;
       for (let i = 0; i < 6; i++) {
         const q = W.Q.nextQuick([b.dataset.m]);
-        await W.Q.askQuick(q);
+        const r = await W.Q.askQuick(q, { training: true, n: i + 1, of: 6 });
+        if (r.correct) ok++;
       }
       S.save();
-      UI.toast('Serie de 6 preguntas relámpago completada');
+      UI.toast('Serie completada: ' + ok + ' de 6 correctas', { gold: ok >= 5 });
     }));
   };
 

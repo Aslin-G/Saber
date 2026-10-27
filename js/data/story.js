@@ -28,7 +28,7 @@ W.STORY = {
     ['Códice del nivel', 'C · botón Y'],
     ['Menú y guardado', 'Esc o M · botón Start'],
     ['Pantalla completa', 'F'],
-    ['En combate', 'Pulsa Espacio cuando el anillo se cierre (Golpe Sincronizado) o justo antes del impacto enemigo (Reflejo de Kanas)'],
+    ['En combate', 'Pulsa Espacio (o toca la pantalla) cuando el anillo se cierre (Golpe Sincronizado) o justo antes del impacto enemigo (Reflejo de Kanas)'],
     ['En las preguntas', 'A–D o 1–4 para elegir, Enter para confirmar, RePág/AvPág para desplazar el Códice']
   ]
 };
