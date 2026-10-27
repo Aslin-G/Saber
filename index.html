@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b1d22">
+<meta name="description" content="Crónicas de Wounmain: RPG en pixel art HD para entrenar las competencias genéricas de Saber Pro en La Guajira.">
+<title>Crónicas de Wounmain</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="game" aria-label="Crónicas de Wounmain">
+  <canvas id="screen"></canvas>
+  <canvas id="dof" aria-hidden="true"></canvas>
+  <div id="grade" aria-hidden="true"></div>
+  <canvas id="fx" aria-hidden="true"></canvas>
+  <canvas id="over" aria-hidden="true"></canvas>
+  <div id="vignette" aria-hidden="true"></div>
+
+  <div id="hud" hidden>
+    <div id="hudParty"></div>
+    <div id="hudRight">
+      <div class="money"><img class="ico" data-icon="dracma" alt=""><b id="hudDracmas">0</b><small>Dracmas</small></div>
+      <div class="money"><img class="ico" data-icon="tuma" alt=""><b id="hudTumas">0</b><small>Tumas</small></div>
+      <div class="sema" id="hudSema" title="Semáforo de aciertos"><i></i><span>Semáforo</span></div>
+    </div>
+    <div id="hudPlace"><small id="hudZone"></small><b id="hudLevel"></b></div>
+    <div id="hudObjective"><small>Objetivo</small><span id="hudObjText"></span></div>
+    <div id="hudPrompt" hidden><kbd>E</kbd><span></span></div>
+    <div id="hudKeys"><span><kbd>Q</kbd> Habilidad</span><span><kbd>Tab</kbd> Héroe</span><span><kbd>C</kbd> Códice</span><span><kbd>Esc</kbd> Menú</span></div>
+  </div>
+
+  <div id="ui"></div>
+
+  <div id="touch" aria-hidden="true">
+    <div id="joy"><div id="joyKnob"></div></div>
+    <div class="tbtns">
+      <button data-tkey="Enter" class="tA">E</button>
+      <button data-tkey="KeyQ" class="tQ">Q</button>
+      <button data-tkey="Tab" class="tT">⇄</button>
+      <button data-tkey="KeyC" class="tC">📜</button>
+      <button data-tkey="Escape" class="tM">☰</button>
+    </div>
+  </div>
+  <div id="toasts" aria-live="polite"></div>
+  <div id="boot"><div class="bootLogo">Crónicas de Wounmain</div><div class="bootBar"><i></i></div><small>Tejiendo el mundo en píxeles…</small></div>
+</div>
+<div id="rotate">Gira tu dispositivo para jugar en horizontal.</div>
+
+<script src="js/core/util.js"></script>
+<script src="js/core/render.js"></script>
+<script src="js/core/input.js"></script>
+<script src="js/core/audio.js"></script>
+<script src="js/art/pixel.js"></script>
+<script src="js/art/biomes.js"></script>
+<script src="js/art/terrain.js"></script>
+<script src="js/art/characters.js"></script>
+<script src="js/art/props.js"></script>
+<script src="js/art/enemies.js"></script>
+<script src="js/art/portraits.js"></script>
+<script src="js/art/icons.js"></script>
+<script src="js/data/superitems.js"></script>
+<script src="js/data/contexts.js"></script>
+<script src="js/data/quick.js"></script>
+<script src="js/data/levels.js"></script>
+<script src="js/data/maps.js"></script>
+<script src="js/data/simulators.js"></script>
+<script src="js/data/story.js"></script>
+<script src="js/game/state.js"></script>
+<script src="js/game/ui.js"></script>
+<script src="js/game/questions.js"></script>
+<script src="js/game/world.js"></script>
+<script src="js/game/battle.js"></script>
+<script src="js/game/simulator.js"></script>
+<script src="js/game/overworld.js"></script>
+<script src="js/game/scenes.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
